@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+	  <title>DuRi ĂnĂn</title>
+	  <meta charset="utf-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	  <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
+	  <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
+	  <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
+
+	  <link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
+	  <link rel="stylesheet" href="css/animate.css">
+
+	  <link rel="stylesheet" href="css/owl.carousel.min.css">
+	  <link rel="stylesheet" href="css/owl.theme.default.min.css">
+	  <link rel="stylesheet" href="css/magnific-popup.css">
+
+	  <link rel="stylesheet" href="css/aos.css">
+
+	  <link rel="stylesheet" href="css/ionicons.min.css">
+
+	  <link rel="stylesheet" href="css/bootstrap-datepicker.css">
+	  <link rel="stylesheet" href="css/jquery.timepicker.css">
+
+
+	  <link rel="stylesheet" href="css/flaticon.css">
+	  <link rel="stylesheet" href="css/icomoon.css">
+	  <link rel="stylesheet" href="css/style.css">
+	  <style>
+		  .form-group label {
+			  display: block;
+			  margin-bottom: 5px;
+		  }
+
+		  .form-row {
+			  margin-bottom: 15px;
+		  }
+		  .form-inline {
+			  display: flex;
+			  flex-wrap: nowrap;
+			  justify-content: center;
+			  align-items: center;
+		  }
+
+		  .form-inline .form-group {
+			  margin-right: 10px;
+		  }
+
+		  .form-inline .btn-primary {
+			  background-color: #28a745;
+			  border-color: #28a745;
+		  }
+
+		  .product-category {
+			  display: flex;
+			  justify-content: center;
+			  list-style: none;
+			  padding-left: 0;
+		  }
+
+		  .product-category li {
+			  margin-right: 15px;
+		  }
+
+		  .product-category li a {
+			  padding: 10px 15px;
+			  border: 1px solid #28a745;
+			  border-radius: 25px;
+			  color: #28a745;
+		  }
+
+		  .product-category li a.active {
+			  background-color: #28a745;
+			  color: white;
+		  }
+
+		  .product-category li a:hover {
+			  background-color: #28a745;
+			  color: white;
+		  }
+
+	  </style>
+  </head>
+  <body class="goto-here">
+  <div th:replace="fragments/header :: header"></div>
+    <div class="hero-wrap hero-bread" style="background-image: url('https://tildaricelive.s3.eu-central-1.amazonaws.com/wp-content/uploads/sites/8/2022/01/07154217/Durian-1.jpg');">
+      <div class="container">
+      </div>
+    </div>
+  <section class="ftco-section">
+	  <div class="container">
+		  <div class="row justify-content-between align-items-center">
+			  <!-- Phần thanh tìm kiếm -->
+			  <div class="col-md-8 mb-3">
+				  <ul class="product-category d-flex justify-content-center">
+					  <li><a th:href="@{/Store}" th:class="${selectedCategoryID == null} ? 'active' : ''">All</a></li>
+					  <li th:each="cate : ${categories}">
+						  <a th:href="@{/Store(categoryID=${cate.categoryID})}"
+							 th:text="${cate.categoryName}"
+							 th:class="${selectedCategoryID != null and selectedCategoryID == cate.categoryID} ? 'active' : ''">
+						  </a>
+					  </li>
+				  </ul>
+			  </div>
+			  <div class="col-md-4 mb-3">
+				  <form th:action="@{/Store}" method="get" class="form-inline d-flex justify-content-end">
+					  <div class="form-group mb-2">
+						  <input type="text" class="form-control" id="productName" name="productName"
+								 placeholder="Tìm sản phẩm..." th:value="${searchedProductName}"> <!-- Để hiển thị lại tên sản phẩm tìm kiếm -->
+					  </div>
+					  <button type="submit" class="btn btn-primary mb-2 ml-2">Tìm kiếm</button>
+				  </form>
+			  </div>
+			  <!-- Phần category -->
+
+		  </div>
+
+		  <!-- Danh sách sản phẩm -->
+		  <div class="row">
+			  <div th:each="pro : ${products}" class="col-md-6 col-lg-3 ftco-animate">
+				  <div class="product">
+					  <a th:href="@{/Store/ProductDetail(productID=${pro.productID})}" class="img-prod">
+						  <img class="img-fluid" th:src="${pro.image}" alt="Product Image">
+						  <div class="overlay"></div>
+					  </a>
+					  <div class="text py-3 pb-4 px-3 text-center">
+						  <h3>
+							  <a th:href="@{/Store/ProductDetail(productID=${pro.productID})}">
+								  <span th:text="${pro.productName}"></span>
+							  </a>
+						  </h3>
+						  <div class="d-flex">
+							  <div class="pricing">
+								  <p class="price">
+									  <span class="price" th:text="${pro.productPrice}"></span> VNĐ
+								  </p>
+							  </div>
+						  </div>
+						  <div class="bottom-area d-flex px-3">
+							  <div class="m-auto d-flex">
+								  <a th:href="@{/Cart/add-to-cart(productID=${pro.productID})}" class="buy-now d-flex justify-content-center align-items-center mx-1">
+									  <span><i class="ion-ios-cart"></i></span>
+								  </a>
+								  <a th:href="@{/Account/AddToWishlist(productID=${pro.productID})}" class="heart d-flex justify-content-center align-items-center ">
+									  <span><i class="ion-ios-heart"></i></span>
+								  </a>
+							  </div>
+						  </div>
+					  </div>
+				  </div>
+			  </div>
+		  </div>
+		  <div class="row mt-5">
+			  <div class="col text-center">
+				  <div class="block-27">
+					  <ul>
+						  <li class="active"><span>1</span></li>
+					  </ul>
+				  </div>
+			  </div>
+		  </div>
+	  </div>
+  </section>
+
+  <div th:replace="fragments/footer :: footer"></div>
+
+
+
+  <!-- loader -->
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+  <script src="js/jquery.min.js"></script>
+  <script src="js/jquery-migrate-3.0.1.min.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/jquery.easing.1.3.js"></script>
+  <script src="js/jquery.waypoints.min.js"></script>
+  <script src="js/jquery.stellar.min.js"></script>
+  <script src="js/owl.carousel.min.js"></script>
+  <script src="js/jquery.magnific-popup.min.js"></script>
+  <script src="js/aos.js"></script>
+  <script src="js/jquery.animateNumber.min.js"></script>
+  <script src="js/bootstrap-datepicker.js"></script>
+  <script src="js/scrollax.min.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+  <script src="js/google-map.js"></script>
+  <script src="js/main.js"></script>
+    
+  </body>
+</html>

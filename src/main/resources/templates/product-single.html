@@ -1,0 +1,326 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+	  <title>DuRi ĂnĂn</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
+
+	  <link rel="stylesheet" th:href="@{/css/open-iconic-bootstrap.min.css}">
+	  <link rel="stylesheet" th:href="@{/css/animate.css}">
+	  <link rel="stylesheet" th:href="@{/css/owl.carousel.min.css}">
+	  <link rel="stylesheet" th:href="@{/css/owl.theme.default.min.css}">
+	  <link rel="stylesheet" th:href="@{/css/magnific-popup.css}">
+	  <link rel="stylesheet" th:href="@{/css/aos.css}">
+	  <link rel="stylesheet" th:href="@{/css/ionicons.min.css}">
+	  <link rel="stylesheet" th:href="@{/css/bootstrap-datepicker.css}">
+	  <link rel="stylesheet" th:href="@{/css/jquery.timepicker.css}">
+	  <link rel="stylesheet" th:href="@{/css/flaticon.css}">
+	  <link rel="stylesheet" th:href="@{/css/icomoon.css}">
+	  <link rel="stylesheet" th:href="@{/css/style.css}">
+	  <style>
+		  /* Breadcrumb styles */
+		  .breadcrumb {
+			  background-color: #f8f9fa;
+			  border-radius: 5px;
+			  padding: 8px;
+		  }
+
+		  .breadcrumb a {
+			  color: #007bff;
+		  }
+
+		  .breadcrumb-item.active {
+			  color: #6c757d;
+			  font-weight: bold;
+		  }
+
+		  /* Product details */
+		  .product-details img {
+			  max-width: 100%;
+			  border-radius: 10px;
+			  margin-bottom: 20px;
+		  }
+
+		  h3 {
+			  font-size: 28px;
+			  font-weight: bold;
+			  margin-bottom: 10px;
+			  color: #333;
+		  }
+
+		  .price span {
+			  font-size: 22px;
+			  color: #ff5722;
+			  font-weight: bold;
+		  }
+
+		  .rating p {
+			  font-size: 16px;
+			  color: #999;
+		  }
+
+		  .input-group {
+			  display: flex;
+			  align-items: center;
+		  }
+
+		  .input-group .btn {
+			  background-color: #f0f0f0;
+			  border-radius: 50%;
+			  width: 40px;
+			  height: 40px;
+			  display: flex;
+			  justify-content: center;
+			  align-items: center;
+		  }
+
+		  .input-group input {
+			  max-width: 60px;
+			  text-align: center;
+			  border: 1px solid #ddd;
+			  border-radius: 5px;
+			  padding: 5px;
+		  }
+
+		  .stock {
+			  color: green;
+			  font-weight: bold;
+		  }
+
+		  .btn-black {
+			  background-color: #000;
+			  color: #fff;
+			  border: none;
+			  border-radius: 5px;
+			  transition: background-color 0.3s ease;
+		  }
+		  .btn-black:hover {
+			  background-color: #ff5722;
+		  }
+		  .product-details p.text {
+			  font-size: 16px;
+			  color: #555;
+			  line-height: 1.6;
+			  margin-top: 15px;
+		  }
+		  .comment-list {
+			  margin-top: 20px;
+			  padding: 15px;
+			  background-color: #f9f9f9;
+			  border-radius: 8px;
+		  }
+
+		  .comment {
+			  margin-bottom: 20px;
+		  }
+
+		  .comment p {
+			  font-size: 16px;
+			  color: #333;
+		  }
+
+		  .comment small {
+			  display: block;
+			  color: #777;
+			  margin-top: 5px;
+		  }
+
+		  form h5 {
+			  margin-top: 30px;
+			  font-size: 18px;
+			  font-weight: bold;
+		  }
+
+		  .form-group {
+			  margin-bottom: 20px;
+		  }
+		  .form-control {
+			  width: 100%;
+			  padding: 10px;
+			  border-radius: 5px;
+			  border: 1px solid #ddd;
+		  }
+		  .btn-primary {
+			  background-color: #00ff0c; /* Màu nền */
+			  color: #ffffff; /* Màu chữ */
+		  }
+	  </style>
+  </head>
+  <body class="goto-here">
+  <div th:replace="fragments/header :: header"></div>
+    <div class="hero-wrap hero-bread" style="background-image: url('https://tildaricelive.s3.eu-central-1.amazonaws.com/wp-content/uploads/sites/8/2022/01/07154217/Durian-1.jpg');">
+    </div>
+  <section class="ftco-section">
+	  <div class="container">
+		  <nav aria-label="breadcrumb">
+			  <ol class="breadcrumb">
+				  <li class="breadcrumb-item"><a href="/Home">Trang Chủ</a></li>
+				  <li class="breadcrumb-item"><a href="/Store">Cửa Hàng</a></li>
+				  <li class="breadcrumb-item active" aria-current="page"><span th:text="${pro.productName}"></span></li>
+			  </ol>
+		  </nav>
+		  <form th:action="@{/Cart/add-to-cart}" method="get" class="row">
+			  <div class="col-lg-6 mb-5 ftco-animate">
+				  <a th:href="@{${pro.image}}" class="image-popup">
+					  <img th:src="@{${pro.image}}" class="img-fluid" alt="Product Image">
+				  </a>
+			  </div>
+			  <div class="col-lg-6 product-details pl-md-5 ftco-animate">
+				  <h3><span th:text="${pro.productName}"></span></h3>
+				  <div class="rating d-flex">
+					  <p class="text-left mr-4">
+						  <a href="#" class="mr-2">5.0</a>
+						  <a href="#"><span class="ion-ios-star"></span></a>
+						  <a href="#"><span class="ion-ios-star"></span></a>
+						  <a href="#"><span class="ion-ios-star"></span></a>
+						  <a href="#"><span class="ion-ios-star"></span></a>
+						  <a href="#"><span class="ion-ios-star"></span></a>
+					  </p>
+					  <p class="text-left mr-4">
+						  <a href="#" class="mr-2" style="color: #000;">100 <span style="color: #bbb;">lượt đánh giá</span></a>
+					  </p>
+					  <p class="text-left">
+						  <a href="#" class="mr-2" style="color: #000;"><span th:text="${pro.viewCount}"></span> <span style="color: #bbb;">lượt xem</span></a>
+					  </p>
+				  </div>
+				  <p class="price"><span th:text="${pro.productPrice}"></span><span> VNĐ / 1kg</span></p>
+				  <p class="price">Cân Nặng: <span th:text="${pro.productWeight}"></span> KG</p>
+				  <p th:text="${pro.productDescription}" class="text"></p>
+				  <div class="row mt-4">
+					  <div class="input-group col-md-6 d-flex mb-3">
+                <span class="input-group-btn mr-2">
+                    <button type="button" class="quantity-left-minus btn" data-type="minus" data-field="">
+                        <i class="ion-ios-remove"></i>
+                    </button>
+                </span>
+						  <input type="text" id="quantity" name="quantity" class="form-control" value="1" min="1" max="100">
+						  <span class="input-group-btn ml-2">
+                    <button type="button" class="quantity-right-plus btn" data-type="plus" data-field="">
+                        <i class="ion-ios-add"></i>
+                    </button>
+                </span>
+					  </div>
+					  <div class="w-100"></div>
+					  <div class="col-md-12">
+						  <p style="color: green;"><span th:text="${pro.stock}"></span> quả có sẵn</p>
+					  </div>
+				  </div>
+				  <input type="hidden" name="productID" th:value="${pro.productID}">
+				  <p>
+					  <input type="submit" class="btn btn-primary py-2 px-3" value="Thêm vào giỏ hàng"></input>
+				  </p>
+				  <div th:if="${errorQuantity}" class="alert alert-danger" th:text="${errorQuantity}"></div>
+			  </div>
+		  </form>
+		  <div class="container mt-5">
+			  <div class="row">
+				  <div class="col-md-12">
+					  <div th:if="${pro.categoryID == 1}">
+						  <h2>Đặc điểm của sầu riêng Monthong nguyên trái</h2>
+						  <p>Trái sầu riêng Monthong được giữ nguyên cả vỏ, đảm bảo giữ trọn độ tươi ngon và hương vị tự nhiên. Quả to, gai đều, và có trọng lượng từ 1-6kg mỗi trái.</p>
+						  <p><strong>Trọng lượng:</strong> Có trọng lượng từ 1kg đến 6kg mỗi quả.</p>
+						  <p><strong>Thời gian bảo quản:</strong> Bảo quản ở nhiệt độ phòng trong khoảng 2-3 ngày, trong tủ lạnh có thể kéo dài đến 5-7 ngày.</p>
+					  </div>
+					  <div th:if="${pro.categoryID == 2}">
+						  <h2>Đặc điểm của sầu riêng Monthong tách múi</h2>
+						  <p>Sầu riêng đã được tách múi, đóng gói sẵn trong các hộp tiện lợi.</p>
+						  <p><strong>Trọng lượng:</strong> Được đóng gói theo khối lượng từ 500g đến 1kg trong các hộp bảo quản kín.</p>
+						  <p><strong>Thời gian bảo quản:</strong> Bảo quản trong ngăn mát tủ lạnh 2-3 ngày. Nếu để ở ngăn đông, thời gian bảo quản có thể lên đến 1-2 tháng.</p>
+					  </div>
+				  </div>
+			  </div>
+		  </div>
+
+		  <div class="row">
+			  <div class="col-md-12">
+				  <h5 style="font-weight: bold">Để lại bình luận của bạn</h5>
+				  <form action="/Store/add-comment" method="POST">
+					  <input type="hidden" name="productID" th:value="${pro.productID}">
+					  <div class="form-group">
+						  <label for="userName">Tên của bạn</label>
+						  <input type="text" id="userName" name="userName"
+								 th:value="${session.user != null ? session.user.firstName + ' ' + session.user.middleName + ' ' + session.user.lastName : ''}"
+								 class="form-control"
+								 placeholder="Tên của bạn">
+					  </div>
+					  <div class="form-group">
+						  <label for="comment">Bình luận của bạn</label>
+						  <textarea id="comment" name="content" rows="4" class="form-control" required></textarea>
+					  </div>
+					  <div th:if="${commentSuccess}" class="alert alert-success">
+						  <p th:text="${commentSuccess}"></p>
+					  </div>
+					  <div class="form-group">
+						  <button type="submit" class="btn btn-primary">Gửi bình luận</button>
+					  </div>
+				  </form>
+				  <h4>Bình luận về sản phẩm</h4>
+				  <div class="comment-list">
+					  <div th:each="comment : ${commentList}" class="comment">
+						  <strong th:text="${comment.user.firstName} + ' ' + ${comment.user.middleName} + ' ' + ${comment.user.lastName}"></strong>:
+						  <span th:text="${comment.commentText}"></span>
+						  <small th:text="${comment.commentedDate}"></small>
+					  </div>
+				  </div>
+				  <div th:if="${commentList == null or #lists.isEmpty(commentList)}">
+					  <p>Chưa có bình luận nào từ người dùng.</p>
+				  </div>
+			  </div>
+		  </div>
+	  </div>
+
+  </section>
+
+
+
+
+  <div th:replace="fragments/footer :: footer"></div>
+    
+  
+
+  <!-- loader -->
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/jquery-migrate-3.0.1.min.js"></script>
+  <script src="/js/popper.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/jquery.easing.1.3.js"></script>
+  <script src="/js/jquery.waypoints.min.js"></script>
+  <script src="/js/jquery.stellar.min.js"></script>
+  <script src="/js/owl.carousel.min.js"></script>
+  <script src="/js/jquery.magnific-popup.min.js"></script>
+  <script src="/js/aos.js"></script>
+  <script src="/js/jquery.animateNumber.min.js"></script>
+  <script src="/js/bootstrap-datepicker.js"></script>
+  <script src="/js/scrollax.min.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+  <script src="/js/google-map.js"></script>
+  <script src="/js/main.js"></script>
+
+  <script>
+		$(document).ready(function(){
+		var quantitiy=0;
+		   $('.quantity-right-plus').click(function(e){
+		        e.preventDefault();
+		        var quantity = parseInt($('#quantity').val());
+		            $('#quantity').val(quantity + 1);
+		    });
+		     $('.quantity-left-minus').click(function(e){
+		        e.preventDefault();
+		        var quantity = parseInt($('#quantity').val());
+		            if(quantity>0){
+		            $('#quantity').val(quantity - 1);
+		            }
+		    });
+
+		});
+	</script>
+    
+  </body>
+</html>

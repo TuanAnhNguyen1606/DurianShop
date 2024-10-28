@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>DuRi ĂnĂn</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/open-iconic-bootstrap.min.css}">
+  <link rel="stylesheet" th:href="@{/css/animate.css}">
+  <link rel="stylesheet" th:href="@{/css/owl.carousel.min.css}">
+  <link rel="stylesheet" th:href="@{/css/owl.theme.default.min.css}">
+  <link rel="stylesheet" th:href="@{/css/magnific-popup.css}">
+  <link rel="stylesheet" th:href="@{/css/aos.css}">
+  <link rel="stylesheet" th:href="@{/css/ionicons.min.css}">
+  <link rel="stylesheet" th:href="@{/css/bootstrap-datepicker.css}">
+  <link rel="stylesheet" th:href="@{/css/jquery.timepicker.css}">
+  <link rel="stylesheet" th:href="@{/css/flaticon.css}">
+  <link rel="stylesheet" th:href="@{/css/icomoon.css}">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <style>
+    .justify {
+      text-align: justify; /* Căn đều các câu */
+      margin-bottom: 1em; /* Khoảng cách giữa các đoạn */
+    }
+    .comment-body {
+      /* Kích thước font chữ mặc định cho bình luận gốc */
+      font-size: 1rem; /* Thay đổi kích thước theo ý muốn */
+    }
+    .children .comment-body {
+      /* Kích thước font chữ nhỏ hơn cho các bình luận con */
+      font-size: 0.875rem; /* Kích thước nhỏ hơn */
+      padding-left: 20px; /* Thêm khoảng cách bên trái cho bình luận con */
+      border-left: 1px solid #ccc; /* Thêm đường viền bên trái cho bình luận con */
+    }
+  </style>
+</head>
+<body class="goto-here">
+<div th:replace="fragments/header :: header"></div>
+
+<div class="hero-wrap hero-bread" style="background-image: url('https://tildaricelive.s3.eu-central-1.amazonaws.com/wp-content/uploads/sites/8/2022/01/07154217/Durian-1.jpg');">
+  <div class="container">
+    <div class="row no-gutters slider-text align-items-center justify-content-center">
+    </div>
+  </div>
+</div>
+
+<section class="ftco-section ftco-degree-bg">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 ftco-animate">
+        <div>
+          <th:block th:if="${not #lists.isEmpty(blogDetails)}">
+            <th:block th:each="detail : ${blogDetails}">
+              <th:block th:if="${detail.contentType == 'h1'}">
+                <h1 style="font-weight: bold" th:text="${detail.content}"></h1>
+              </th:block>
+              <th:block th:if="${detail.contentType == 'h2'}">
+                <h4 th:text="${detail.content}" style="font-weight: bold"></h4>
+              </th:block>
+              <th:block th:if="${detail.contentType == 'h3'}">
+                <h3 th:text="${detail.content}"></h3>
+              </th:block>
+              <th:block th:if="${detail.contentType == 'p'}">
+                <p class="justify" style="font-size: large"  th:text="${detail.content}"></p>
+              </th:block>
+              <th:block th:if="${detail.imageURL != null}">
+                <img th:src="${detail.imageURL}" alt="Blog Image" style="max-width: 100%; height: auto;" />
+                <div><br></div>
+              </th:block>
+            </th:block>
+          </th:block>
+          <th:block th:if="${#lists.isEmpty(blogDetails)}">
+            <p style="color: red">Không có nội dung chi tiết</p>
+          </th:block>
+        </div>
+        <div class="pt-5 mt-5">
+          <h3 class="mb-5"><span th:text="${blogComments.size()}"></span> Bình Luận</h3>
+          <div th:if="${replyCommentBlog}" class="alert alert-success">
+            <p th:text="${replyCommentBlog}"></p>
+          </div>
+          <ul class="comment-list">
+            <li th:each="bl : ${blogComments}" th:if="${bl.parentID == null}" class="comment">
+              <div class="vcard bio">
+                <img th:src="@{${bl.user.avatarURL}}" alt="Avatar">
+              </div>
+              <div class="comment-body">
+                <h3 th:text="${bl.user.firstName} + ' ' + ${bl.user.middleName} + ' ' + ${bl.user.lastName}"></h3>
+                <div class="meta"><span th:text="${bl.createdAt}"></span></div>
+                <p th:text="${bl.commentContent}"></p>
+                <div class="reply-form">
+                  <button type="button" class="btn btn-secondary reply-btn" onclick="toggleReplyForm(this)">Trả lời</button>
+                  <form action="/Blog/reply-comment" method="post" class="reply-form-container" style="display:none;">
+                    <textarea class="form-control" name="content" rows="3" placeholder="Nhập phản hồi..."></textarea>
+                    <input type="hidden" name="commentID" th:value="${bl.blogCommentID}">
+                    <input type="hidden" name="blogID" th:value="${blog.blogID}">
+                    <button type="submit" class="btn btn-primary">Gửi phản hồi</button>
+                  </form>
+                </div>
+                <ul class="children">
+                  <li th:each="reply : ${blogComments}" th:if="${reply.parentID == bl.blogCommentID}" class="comment">
+                    <div class="vcard bio">
+                      <img th:src="@{${reply.user.avatarURL}}" alt="Avatar">
+                    </div>
+                    <div class="comment-body">
+                      <h3 th:text="${reply.user.firstName} + ' ' + ${reply.user.middleName} + ' ' + ${reply.user.lastName}"></h3>
+                      <div class="meta"><span th:text="${reply.createdAt}"></span></div>
+                      <p th:text="${reply.commentContent}"></p>
+                      <div class="reply-form">
+                        <button type="button" class="btn btn-secondary reply-btn" onclick="toggleReplyForm(this)">Trả lời</button>
+                        <form action="@{/api/replies}" method="post" class="reply-form-container" style="display:none;">
+                          <textarea class="form-control" name="content" rows="3" placeholder="Nhập phản hồi..."></textarea>
+                          <input type="hidden" name="commentId" th:value="${reply.blogCommentID}">
+                          <button type="submit" class="btn btn-primary">Gửi phản hồi</button>
+                        </form>
+                      </div>
+                      <ul class="children">
+                        <li th:each="nestedReply : ${blogComments}" th:if="${nestedReply.parentID == reply.blogCommentID}" class="comment">
+                          <div class="vcard bio">
+                            <img th:src="@{${nestedReply.user.avatarURL}}" alt="Avatar">
+                          </div>
+                          <div class="comment-body">
+                            <h3 th:text="${nestedReply.user.firstName} + ' ' + ${nestedReply.user.middleName} + ' ' + ${nestedReply.user.lastName}"></h3>
+                            <div class="meta"><span th:text="${nestedReply.createdAt}"></span></div>
+                            <p th:text="${nestedReply.commentContent}"></p>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+
+          <div class="comment-form-wrap pt-5">
+            <h3 class="mb-5">Để lại bình luận</h3>
+            <form action="/Blog/add-comment" method="post" class="p-5 bg-light">
+              <div class="form-group">
+                <label for="name">Tên *</label>
+                <input type="text" id="name" name="userName"
+                       th:value="${session.user != null ? session.user.firstName + ' ' + session.user.middleName + ' ' + session.user.lastName : ''}"
+                       class="form-control"
+                       placeholder="Tên của bạn">
+              </div>
+              <div class="form-group">
+                <label for="message">Lời nhắn</label>
+                <textarea name="content" id="message" cols="30" rows="10" class="form-control"></textarea>
+              </div>
+              <div th:if="${commentBlogSuccess}" class="alert alert-success">
+                <p th:text="${commentBlogSuccess}"></p>
+              </div>
+              <div>
+                <input type="hidden" th:value="${blog.blogID}" name="blogID">
+              </div>
+              <div class="form-group">
+                <input type="submit" value="Đăng bình luận" class="btn py-3 px-4 btn-primary">
+              </div>
+            </form>
+          </div>
+        </div>
+
+
+
+
+
+      </div> <!-- .col-md-8 -->
+
+      <div class="col-lg-4 sidebar ftco-animate">
+        <div class="sidebar-box ftco-animate">
+          <h3 class="heading" style="font-weight: bold">Tin tức gần đây</h3>
+          <div th:each="blog : ${blogs}" class="block-21 mb-4 d-flex">
+            <div class="text">
+              <h3 class="heading-1">
+                <a th:href="@{'/Blog/' + ${blog.blogID}}"><span th:text="${blog.blogTitle}"></span></a>
+              </h3>
+              <div class="meta">
+                <div><a href="#"><span class="icon-calendar" th:text="${blog.blogCreatedAt}"></span></a></div>
+                <div><a href="#"><span class="icon-person" th:text="${blog.blogAuthor}"></span></a></div>
+                <div><a href="#"><span class="icon-chat"></span> 19</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</section> <!-- .section -->
+<div th:replace="fragments/footer :: footer"></div>
+
+
+
+<!-- loader -->
+<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+<script>
+  function toggleReplyForm(button) {
+    // Tìm kiếm form phản hồi trong cùng một khối bình luận
+    const replyForm = button.nextElementSibling;
+
+    // Kiểm tra trạng thái hiển thị và thay đổi
+    if (replyForm.style.display === "none" || replyForm.style.display === "") {
+      replyForm.style.display = "block";
+    } else {
+      replyForm.style.display = "none";
+    }
+  }
+</script>
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-migrate-3.0.1.min.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.easing.1.3.js"></script>
+<script src="/js/jquery.waypoints.min.js"></script>
+<script src="/js/jquery.stellar.min.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
+<script src="/js/jquery.magnific-popup.min.js"></script>
+<script src="/js/aos.js"></script>
+<script src="/js/jquery.animateNumber.min.js"></script>
+<script src="/js/bootstrap-datepicker.js"></script>
+<script src="/js/scrollax.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+<script src="/js/google-map.js"></script>
+<script src="/js/main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  shop-db:
+    image: mysql:8.1
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3308:3306"
+    command: ["--max_connections=1000000"]
+    restart: "no"
+
+  shop-app:
+    image: hiiameasyanh/message-server:latest
+    environment:
+      MYSQL_URL: shop-db:3306/EXE201
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "8080:8080"
+    depends_on:
+      - shop-db
+    restart: always
